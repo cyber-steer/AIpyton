@@ -18,3 +18,7 @@
 
 
 '''
+'''
+z = np.arange(-5, 5, 0.1)
+phi = 1/(1+np.exp(-z))
+plt.plot(z, )'''
