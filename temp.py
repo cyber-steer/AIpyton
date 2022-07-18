@@ -1,3 +1,5 @@
 from testFuntion import*
 
-print(testFuntion().testMethod())
+db = testFuntion()
+nameKey = db.set("aaaa")
+print(db.get(nameKey["name"]))

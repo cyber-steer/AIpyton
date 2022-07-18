@@ -14,5 +14,7 @@ class testFuntion():
     firebase = pyrebase.initialize_app(firebaseConfig)
     db=firebase.database()
 
-    def testMethod(self):
-        return self.db.child("name").get().val()
+    def get(self, key):
+        return self.db.child("people").child(key).get().val()
+    def set(self, name):
+        return self.db.child("people").push(name)
