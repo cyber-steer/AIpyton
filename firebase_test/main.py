@@ -14,9 +14,9 @@ firebaseConfig = {"apiKey": "AIzaSyBETK45cbP1g2ZYC03ras5UYys5fXAqV_4",
 
 firebase=pyrebase.initialize_app(firebaseConfig)
 
-db=firebase.database()
+# db=firebase.database()
 # auth=firebase.auth()
-# storage=firebase.storage()
+storage=firebase.storage()
 
 # Authentication
 # Login
@@ -48,7 +48,7 @@ db=firebase.database()
 
 # download
 # cloudfilename = input("Enter the name of the file you want to download")
-# storage.child(cloudfilename).download("","downloaded.txt")
+# storage.child(cloudfilename).download("","dummy.txt")
 
 # reading file
 # cloudfilename = input("Enter the name of the file you want to download")
@@ -57,5 +57,30 @@ db=firebase.database()
 # print(f)
 
 # Database
-data = {'age':32, 'address':"LA", 'employed':False, 'name':"John Smith"}
-db.child("people").child("person").push(data)
+# create
+# data = {'age':32, 'address':"LA", 'employed':True, 'name':"Jane"}
+# db.child("people").child("asdfghjk").set(data)
+
+# update
+# db.child("people").child("asdfghjk").update({'name':'Jane'})
+
+# people=db.child("people").get()
+# for person in people.each():
+#   if person.val()['name']=='Mark':
+#     db.child("people").child(person.key()).update({'name':'Jane'})
+
+# Delete
+# db.child("people").child("person").remove()
+
+# people=db.child("people").get()
+# for person in people.each():
+#   if person.val()['name']=='John Smith':
+#     db.child("people").child(person.key()).child("age").remove()
+
+# Read
+# people = db.child("people").order_by_child("age").start_at(20).get()
+# people = db.child("people").order_by_child("employed").equal_to(True).get().val()
+# if len(people) != 0:
+#   print("true")
+# else:
+#   print("false")

@@ -1,6 +1,6 @@
 import pyrebase
 
-class testFuntion():
+class firebaseConn():
     firebaseConfig = {"apiKey": "AIzaSyBETK45cbP1g2ZYC03ras5UYys5fXAqV_4",
                       "authDomain": "fir-course-edb8c.firebaseapp.com",
                       # "databaseURL": "https://fir-course-edb8c.firebaseio.com",
