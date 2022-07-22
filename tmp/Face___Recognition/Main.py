@@ -4,11 +4,12 @@ import os
 import numpy as np
 from datetime import datetime
 import pickle
+from testFuntion import*
+from tmp.Face___Recognition.Telegram import Sendtelegram
+from tmp.Face___Recognition.testFuntion import testFuntion
 
-# from Face___Recognition.firebase_database import testFuntion
-from firebase_database import*
-
-db = firebase_database(7)
+db = testFuntion()
+tele = Sendtelegram()
 # 훈련 데이터 폴더 정의.
 path = "student"
 
@@ -68,16 +69,22 @@ while True:
             cv2.rectangle(img, (x1,y2-35),(x2,y2), (0,255,0), cv2.FILLED)
             cv2.putText(img,name, (x1+6,y2-5), cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
             markAttendance(name)
-            db.set(name)
-            # print(name, date)
+            print(name)
+            # nameKey = db.set(name)
+            # print(db.get(nameKey["name"]))
         elif not matches[matchIndex]:
             name = 'Unknown'
-
             y1,x2,y2,x1 = faceloc
+
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4  # 출력 프레임에 오버레이 하기 위해 4를 곱함.
-            cv2.rectangle(img, (x1, y1), (x2, y2), (220,20,60), 2)
-            cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (220,20,60), cv2.FILLED)
-            cv2.putText(img, name, (x1 + 6, y2 - 5), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0,0,255), 2)
+            cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0,0,255), cv2.FILLED)
+            cv2.putText(img, name, (x1 + 6, y2 - 5), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 2)
+            capImg = cv2.imwrite('unknown.jpg', img)
+            test = 'unknown.jpg'
+            tele.sendImg(test)
+            print(name)
+            tele.sendMessege()
     cv2.imshow('webcam', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
