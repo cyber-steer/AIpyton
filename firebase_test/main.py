@@ -14,9 +14,9 @@ firebaseConfig = {"apiKey": "AIzaSyBETK45cbP1g2ZYC03ras5UYys5fXAqV_4",
 
 firebase=pyrebase.initialize_app(firebaseConfig)
 
-# db=firebase.database()
+db=firebase.database()
 # auth=firebase.auth()
-storage=firebase.storage()
+# storage=firebase.storage()
 
 # Authentication
 # Login
@@ -60,6 +60,12 @@ storage=firebase.storage()
 # create
 # data = {'age':32, 'address':"LA", 'employed':True, 'name':"Jane"}
 # db.child("people").child("asdfghjk").set(data)
+data = {'name':'설재혁', 'engname':'Seol', 'number':'201929196'}
+db.child("person").push(data)
+data = {'name':'손옥무', 'engname':'Son', 'number':'202159884 '}
+db.child("person").push(data)
+data = {'name':'김건우', 'engname':'Kim', 'number':'202163104'}
+db.child("person").push(data)
 
 # update
 # db.child("people").child("asdfghjk").update({'name':'Jane'})

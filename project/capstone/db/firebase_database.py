@@ -5,13 +5,15 @@ import json
 class firebase_database():
     delay = 10
     last_person = None
-    with open("auth_databse.json") as f:
+    with open("db/auth_database.json") as f:
         config = json.load(f)
     firebase = pyrebase.initialize_app(config)
     db=firebase.database()
 
     def __init__(self, delay = 5):
         self.delay = delay
+
+    # firebase에 추가
     def set(self, name):
         date = str(datetime.datetime.now())
         data = {name:date}
@@ -28,6 +30,7 @@ class firebase_database():
         pass
         # for key, val in data.items():
         #     self.cooldownlist[key] = val
+
     def cooldowncheck(self, name): # 마지막과 동일하면 False DB저장하려면 True
         if self.last_person == None:
             return True

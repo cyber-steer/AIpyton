@@ -5,7 +5,7 @@ import json
 class firebase_database():
     delay = 10
     last_person = None
-    with open("auth_databse.json") as f:
+    with open("db/auth_database.json") as f:
         config = json.load(f)
     firebase = pyrebase.initialize_app(config)
     db=firebase.database()

@@ -4,16 +4,24 @@ import os
 import numpy as np
 from datetime import datetime
 import pickle
-from testFuntion import*
-from firebase_database import *
-from firebase_storage import *
-from Telegram import *
 
+from db.firebase_database import firebase_database
+from db.firebase_storage import firebase_storage
+from messenger.Telegram import Sendtelegram
+# from doorlock import *
+
+# DB Connection
 db = firebase_database(30)
 storage = firebase_storage()
+
+# Tekegram Connection
 tele = Sendtelegram()
+
 # 훈련 데이터 폴더 정의.
 path = "student"
+
+# Serial communication
+# dl = doorlock()
 
 # 훈련 데이터 이미지를 배열에 저장하고 classNames에 파일 이름을 추가.
 images = []
@@ -33,21 +41,6 @@ def findEncodings(images):
         encodeList.append(encoded_face)
     return encodeList
 encoded_face_train = findEncodings(images) # 인코딩된 훈련 데이터 저장.
-
-# csv 파일로 내보내기.
-def markAttendance(name):
-    with open('Attendance.csv','r+') as f:
-        myDataList = f.readlines()
-        nameList = []
-        for line in myDataList:
-            entry = line.split(',')
-            nameList.append(entry[0])
-        if name not in nameList:
-            now = datetime.now()
-            time = now.strftime('%I:%M:%S:%p')
-            date = now.strftime('%d-%B-%Y')
-            f.writelines(f'\n{name}, {time}, {date}')
-
 
 # Webcam에서 영상을 받아온 후 저장. (카메라 열기)
 cap  = cv2.VideoCapture(0)
@@ -70,9 +63,13 @@ while True:
             cv2.rectangle(img,(x1,y1),(x2,y2),(0,255,0),2)
             cv2.rectangle(img, (x1,y2-35),(x2,y2), (0,255,0), cv2.FILLED)
             cv2.putText(img,name, (x1+6,y2-5), cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
-            markAttendance(name)
             print(name)
             db.set(name)
+
+            # Door Open
+            # dl.doorlock()
+
+        # If face authentication fail    
         elif not matches[matchIndex]:
             name = 'Unknown'
             y1,x2,y2,x1 = faceloc
@@ -84,9 +81,11 @@ while True:
             capImg = cv2.imwrite('unknown.jpg', img)
             test = 'unknown.jpg'
             db.set(name)
-            storage.img_insert(str(datetime.datetime.now()))
-            tele.sendImg(test)
+            # storage.img_insert(str(datetime.datetime.now()))
             print(name)
+
+            # Send message to Telegram if face authentication fails
+            tele.sendImg(test)
             tele.sendMessege()
     cv2.imshow('webcam', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):

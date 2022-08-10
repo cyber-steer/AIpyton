@@ -18,6 +18,7 @@ isN = 1
 b = 0
 
 class FaceRecog():
+    pass
 
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
@@ -155,19 +156,20 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
+    print("hello")
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
-    while True:
-        frame = face_recog.get_frame()
-
-        # show the frame
-        cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
-
-        # if the `q` key was pressed, break from the loop
-        if key == ord("q"):
-            break
-
-    # do a bit of cleanup
-    cv2.destroyAllWindows()
-    print('finish')
+    # while True:
+    #     frame = face_recog.get_frame()
+    #
+    #     # show the frame
+    #     cv2.imshow("Frame", frame)
+    #     key = cv2.waitKey(1) & 0xFF
+    #
+    #     # if the `q` key was pressed, break from the loop
+    #     if key == ord("q"):
+    #         break
+    #
+    # # do a bit of cleanup
+    # cv2.destroyAllWindows()
+    # print('finish')

@@ -3,17 +3,23 @@ import face_recognition
 import os
 import numpy as np
 from datetime import datetime
-import pickle
-from testFuntion import*
-from firebase_database import *
-from firebase_storage import *
-from Telegram import *
+from db.firebase_database import firebase_database
+from db.firebase_storage import firebase_storage
+from messenger.Telegram import Sendtelegram
+# from doorlock import *
 
+# DB Connection
 db = firebase_database(30)
 storage = firebase_storage()
+
+# Tekegram Connection
 tele = Sendtelegram()
+
 # 훈련 데이터 폴더 정의.
 path = "student"
+
+# Serial communication
+# dl = doorlock()
 
 # 훈련 데이터 이미지를 배열에 저장하고 classNames에 파일 이름을 추가.
 images = []
@@ -73,6 +79,11 @@ while True:
             markAttendance(name)
             print(name)
             db.set(name)
+
+            # Door Open
+            # dl.doorlock()
+
+        # If face authentication fail    
         elif not matches[matchIndex]:
             name = 'Unknown'
             y1,x2,y2,x1 = faceloc
@@ -84,9 +95,11 @@ while True:
             capImg = cv2.imwrite('unknown.jpg', img)
             test = 'unknown.jpg'
             db.set(name)
-            storage.img_insert(str(datetime.datetime.now()))
-            tele.sendImg(test)
+            # storage.img_insert(str(datetime.datetime.now()))
             print(name)
+
+            # Send message to Telegram if face authentication fails
+            tele.sendImg(test)
             tele.sendMessege()
     cv2.imshow('webcam', img)
     if cv2.waitKey(1) & 0xFF == ord('q'):

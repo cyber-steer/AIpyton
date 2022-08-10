@@ -15,6 +15,7 @@ firebase=pyrebase.initialize_app(firebaseConfig)
 
 db=firebase.database()
 
+
 sample =[
   {"웹 프로그래밍":{
     "week1":{
@@ -193,12 +194,12 @@ schedule = [
   {"class8":16}
 ]
 
-for subject in sample:
-  for week in subject.items():
-    for classes in week[1].items():
-      for name in classes[1].items():
-        for time in name[1].items():
-          db.child("attendance").child(week[0]).child(classes[0]).child(name[0]).child(time[0]).set(time[1])
+# for subject in sample:
+#   for week in subject.items():
+#     for classes in week[1].items():
+#       for name in classes[1].items():
+#         for time in name[1].items():
+#           db.child("attendance").child(week[0]).child(classes[0]).child(name[0]).child(time[0]).set(time[1])
           # print(week[0], classes[0], name[0], time[0], time[1])
 
 # for week in timetable:
