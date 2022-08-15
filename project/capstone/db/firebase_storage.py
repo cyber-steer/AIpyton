@@ -19,6 +19,3 @@ class firebase_storage():
             name = q.get()
             if name == 'Unknown':
                 self.img_insert(str(datetime.now()))
-            if name == ord("q"):
-                break
-        print('storage exit')

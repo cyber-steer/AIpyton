@@ -17,9 +17,6 @@ class firebase_database():
             name = q.get()
             if name != "":
                 self.set(name)
-            if name == ord("q"):
-                break
-        print('database exit')
     # firebase에 추가
     def set(self, name):
         date = str(datetime.datetime.now())

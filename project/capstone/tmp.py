@@ -127,17 +127,46 @@ from queue import Queue
 # t1.start()
 # t2.start()
 
-class Test:
-    def tmp(self, q):
-        while True:
-            n = q.get()
-            # if n == 0:
-            print(n)
-q = Queue()
-test = Test()
-t = threading.Thread(target=test.tmp, args=(q,))
-t.start()
-q.put('')
-while True:
-    n = random.randint(0,9)
-    q.put(n)
+# class Test:
+#     def tmp(self, q):
+#         while True:
+#             n = q.get()
+#             # if n == 0:
+#             print(n)
+# q = Queue()
+# test = Test()
+# t = threading.Thread(target=test.tmp, args=(q,))
+# t.start()
+# q.put('')
+# while True:
+#     n = random.randint(0,9)
+#     q.put(n)
+
+from time import sleep
+from threading import Thread, Event
+
+event = Event()
+
+
+def infinite_loop():
+    while True:
+        sleep(1)
+        if event.is_set():
+            print('Infinite Loop Stop!')
+            print(event.is_set())
+            return
+        print('Infinite Loop Thread!')
+
+
+if __name__ == '__main__':
+    t = Thread(target=infinite_loop, daemon=True)
+    t.start()
+
+    print('Script Start!')
+    for i in range(1, 6):
+        sleep(0.5)
+        print('for loop #{}'.format(i))
+        if i == 5:
+            event.set()
+    # time.sleep(2)
+    print('Script End!')

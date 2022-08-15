@@ -25,6 +25,3 @@ class Telegram:
             if name == 'Unknown':
                 self.sendMessege()
                 self.sendImg('Unknown.jpg')
-            if name == ord("q"):
-                break
-        print('telegram exit')

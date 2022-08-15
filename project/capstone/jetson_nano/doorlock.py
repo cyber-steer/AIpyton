@@ -26,6 +26,3 @@ class Doorlock:
             name = q.get()
             if name !='' and name != 'Unknown':
                 self.open()
-            if name == ord("q"):
-                break
-        print('doorlock exit')

@@ -45,9 +45,7 @@ if __name__ == '__main__':
 
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
-            q.put(key)
             break
 
     cv2.destroyAllWindows()
-    time.sleep(300)
     print("end")
