@@ -1,5 +1,6 @@
 import pyrebase
 import json
+from datetime import datetime
 
 class firebase_storage():
     with open("db/auth.json") as f:
@@ -9,12 +10,15 @@ class firebase_storage():
     # unknown
     def img_insert(self, date):
         print("img_insert")
-        print(date)
         year = date[:4]
         month = date[5:7]
         day = date[8:10]
-        print("year :",year)
-        print("month :",month)
-        print("day :",day)
-        print("file Name :",date[11:19])
         self.storage.child("club").child(year).child(month).child(day).child(date[11:19]).put("unknown.jpg")
+    def insert(self, q):
+        while True:
+            name = q.get()
+            if name == 'Unknown':
+                self.img_insert(str(datetime.now()))
+            if name == ord("q"):
+                break
+        print('storage exit')

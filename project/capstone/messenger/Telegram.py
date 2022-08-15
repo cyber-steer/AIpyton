@@ -1,6 +1,6 @@
 import telegram
 
-class Sendtelegram:
+class Telegram:
 
     # Telegram API
     chat_token = "5412707226:AAH0GcrnT16aKknamkQW7j0ntXi76l9cREY"
@@ -19,4 +19,12 @@ class Sendtelegram:
         # bot = telegram.Bot(self.chat_token)
         # bot.send_photo(chat_id = '5526673347', photo=open(img, 'rb'))
         print("sendImg call")
-
+    def send(self, q):
+        while True:
+            name = q.get()
+            if name == 'Unknown':
+                self.sendMessege()
+                self.sendImg('Unknown.jpg')
+            if name == ord("q"):
+                break
+        print('telegram exit')

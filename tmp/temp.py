@@ -4,6 +4,7 @@ import face_recognition
 import cv2
 import os
 import numpy as np
+import time
 
 class VideoCamera():
     def __init__(self):
@@ -42,6 +43,7 @@ class FaceRecog():
         self.process_this_frame = True
 
     def get_frame(self):
+        name = ""
         frame = self.camera.get_frame()
 
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -73,7 +75,6 @@ class FaceRecog():
                 else:
                     name = "Unknown"
 
-                print("name :",name)
                 self.face_names.append(name)
 
         self.process_this_frame = not self.process_this_frame
@@ -90,29 +91,43 @@ class FaceRecog():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
-        return frame
+        return frame, name
 
-    # def get_jpg_bytes(self):
-    #     frame = self.get_frame()
-    #     ret, jpg = cv2.imencode('.jpg', frame)
-    #     return jpg.tobytes()
+    def get_jpg_bytes(self):
+        frame = self.get_frame()
+        ret, jpg = cv2.imencode('.jpg', frame)
+        return jpg.tobytes()
 
 
 if __name__ == '__main__':
     # 객체 생성
     face_recog = FaceRecog()
+    arr = []
     while True:
          # 객체 내 메소드 실행
-        frame = face_recog.get_frame()
+        start = time.time()
+        frame, name = face_recog.get_frame()
 
         # 화면 출력
         cv2.imshow("Frame", frame)
-         
+        print("name :",name)
+        if name == "":
+            time.sleep(0.1)
+        else:
+            time.sleep(5)
+        time.sleep(0.3)
+        end = time.time()
+        arr.append(end - start)
+        print(f"{end - start:.5f} sec")
          # 종료 키
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord("q"):
             break
+    sum = 0
+    for sec in arr:
+        sum += sec
+    print("avg :",sum/len(arr))
     # do a bit of cleanup
     cv2.destroyAllWindows()
     print('finish')

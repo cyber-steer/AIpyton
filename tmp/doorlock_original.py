@@ -51,10 +51,8 @@ class FaceRecog():
         del self.camera
 
     def get_frame(self):
-        name=""
         # Grab a single frame of video
         frame = self.camera.get_frame()
-        print("start frame :",id(frame))
 
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -146,8 +144,7 @@ class FaceRecog():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
-        print("return frame :",id(frame))
-        return frame, name
+        return frame
 
     def get_jpg_bytes(self):
         frame = self.get_frame()
@@ -159,36 +156,20 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
+    print("hello")
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
-    arr = []
     while True:
-        start = time.time()
-        frame, name = face_recog.get_frame()
+        frame = face_recog.get_frame()
 
         # show the frame
         cv2.imshow("Frame", frame)
-        print("main frame :",id(frame))
-        print("name :",name)
-        if name == "":
-            time.sleep(0.1)
-        else:
-            time.sleep(10)
-        time.sleep(0.3)
-        end = time.time()
-
-        arr.append(end - start)
-        print(f"{end - start:.5f} sec")
         key = cv2.waitKey(1) & 0xFF
-        print("key :", key)
 
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
-    sum = 0
-    for sec in arr:
-        sum += sec
-    print("avg :",sum/len(arr))
+
     # do a bit of cleanup
     cv2.destroyAllWindows()
     print('finish')

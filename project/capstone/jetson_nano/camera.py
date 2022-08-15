@@ -1,4 +1,5 @@
 import sys
+import threading
 import time
 
 import cv2
@@ -6,16 +7,18 @@ import os
 import face_recognition
 import numpy as np
 class Camera():
-    def __init__(self):
+    def __init__(self, dirname = 'registered'):
         # 카메라 불러오기
         self.camera = cv2.VideoCapture(0)
         # 사진 인코딩 목록
         self.known_face_encodings = []
         # 사진파일 이름 목록
         self.known_face_names = []
-        dirname = 'registered'
+
+        # dirname = 'registered'
         files = os.listdir(dirname)
         print("file :",files)
+
         for filename in files:
             # name:파일명, ext:확장자
             name, ext = os.path.splitext(filename)
@@ -28,6 +31,7 @@ class Camera():
 
         self.face_locations = []
         self.face_encodings = []
+        self.face_names = []
         self.process_this_frame = True
 
     def get_frame(self):
@@ -41,7 +45,7 @@ class Camera():
 
         self.process_this_frame = not self.process_this_frame
         if name != "":
-            print("name :",name)
+            # print("name :",name)
             if name == 'Unknown':
                 self.draw(frame, 'red')
             else:
@@ -62,7 +66,7 @@ class Camera():
             distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
             # 가장작은 오차율
             min_value = min(distances)
-            print("dist :",min_value)
+            # print("dist :",min_value)
 
 
             # 등록된 인원일시
@@ -73,15 +77,15 @@ class Camera():
             # 등록된 인원이 아닐시
             else:
                 name = "Unknown"
-
-            print("name :",name)
             self.face_names.append(name)
+        self.process_this_frame = not self.process_this_frame
         return name
     def draw(self, frame, color):
         if color == 'red' or color == 'Red' or color == "RED":
             color = (0,0,255)
         elif color == 'green' or color == 'Green' or color == 'GREEN':
             color = (0,255,0)
+
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
             top *= 4
             right *= 4
@@ -94,21 +98,11 @@ class Camera():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
-        # 확인 용 그림
-        h,w,c = frame.shape
-        print("h :",h,", w :",w,", c :",c)
-        right = w
-        bottom = int(h/10)
-        cv2.rectangle(frame, (0, 0), (right, bottom), color, -1)
-
-    def draw_check(self):
-        pass
-
-
 if __name__ == '__main__':
-    camera = Camera()
+    # pass
+    camera = Camera('../registered')
     while True:
-        frame = camera.get_frame()
+        frame, name = camera.get_frame()
         cv2.imshow("webcam", frame)
 
         key = cv2.waitKey(1) & 0xFF
@@ -117,4 +111,3 @@ if __name__ == '__main__':
             break
 
     cv2.destroyAllWindows()
-    print("end")

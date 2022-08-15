@@ -1,7 +1,7 @@
 # import Jetson.GPIO as GPIO
 import time
 
-class doorlock:
+class Doorlock:
     # Pin Definitions
     output_pin = 18  # BCM pin 18, BOARD pin 12
 
@@ -21,4 +21,11 @@ class doorlock:
             # GPIO.cleanup()
             pass
 
-
+    def action(self, q):
+        while True:
+            name = q.get()
+            if name !='' and name != 'Unknown':
+                self.open()
+            if name == ord("q"):
+                break
+        print('doorlock exit')

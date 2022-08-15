@@ -3,16 +3,23 @@ import datetime
 import json
 
 class firebase_database():
-    delay = 10
-    last_person = None
-    with open("db/auth_database.json") as f:
-        config = json.load(f)
-    firebase = pyrebase.initialize_app(config)
-    db=firebase.database()
 
-    def __init__(self, delay = 5):
+    def __init__(self, delay = 10):
         self.delay = delay
+        self.last_person = None
+        with open("db/auth_database.json") as f:
+            config = json.load(f)
+        firebase = pyrebase.initialize_app(config)
+        self.db=firebase.database()
 
+    def insert(self, q):
+        while True:
+            name = q.get()
+            if name != "":
+                self.set(name)
+            if name == ord("q"):
+                break
+        print('database exit')
     # firebase에 추가
     def set(self, name):
         date = str(datetime.datetime.now())
@@ -26,10 +33,6 @@ class firebase_database():
             return True
         else:
             return False
-    def cooldownadd(self, data):
-        pass
-        # for key, val in data.items():
-        #     self.cooldownlist[key] = val
 
     def cooldowncheck(self, name): # 마지막과 동일하면 False DB저장하려면 True
         if self.last_person == None:
