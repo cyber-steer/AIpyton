@@ -12,8 +12,6 @@ from messenger.Telegram import Telegram
 from messenger.thread_messenger import Thread_Messenger
 
 if __name__ == '__main__':
-    event = threading.Event()
-
     camera = Camera()
     realtime_db = firebase_database(30)
     storage = firebase_storage()
@@ -34,6 +32,8 @@ if __name__ == '__main__':
     while True:
         frame, name = camera.get_frame()
         # print(f'name : {name}')
+        cv2.namedWindow("webcam", cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty("webcam", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
         cv2.imshow("webcam", frame)
 
         # 등록된 인원이 아닐경우

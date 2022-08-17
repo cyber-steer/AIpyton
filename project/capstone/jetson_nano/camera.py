@@ -31,13 +31,13 @@ class Camera():
 
         self.face_locations = []
         self.face_encodings = []
-        self.face_names = []
         self.process_this_frame = True
 
     def get_frame(self):
         name = ""
         ret, frame = self.camera.read()
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        # small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        small_frame = frame
         rgb_small_frame = small_frame[:, :, ::-1]
 
         if self.process_this_frame:
@@ -47,10 +47,10 @@ class Camera():
         if name != "":
             # print("name :",name)
             if name == 'Unknown':
-                self.draw(frame, 'red')
+                self.draw(frame, name, 'red')
             else:
-                self.draw(frame, 'green')
-
+                self.draw(frame, name, 'green')
+        print(f'return id : {id(frame)}')
         return frame, name
 
     def get_name(self, rgb_small_frame):
@@ -58,7 +58,6 @@ class Camera():
         self.face_locations = face_recognition.face_locations(rgb_small_frame)
         # 얼굴 인코딩
         self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)
-        self.face_names = []
         name = ''
 
         for face_encoding in self.face_encodings:
@@ -66,7 +65,7 @@ class Camera():
             distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
             # 가장작은 오차율
             min_value = min(distances)
-            # print("dist :",min_value)
+            print("dist :",min_value)
 
 
             # 등록된 인원일시
@@ -77,21 +76,24 @@ class Camera():
             # 등록된 인원이 아닐시
             else:
                 name = "Unknown"
-            self.face_names.append(name)
         self.process_this_frame = not self.process_this_frame
         return name
-    def draw(self, frame, color):
+    def draw(self, frame, name, color):
+        print('color :', color)
         if color == 'red' or color == 'Red' or color == "RED":
             color = (0,0,255)
         elif color == 'green' or color == 'Green' or color == 'GREEN':
             color = (0,255,0)
+        print(self.face_locations)
+        print(name)
 
-        for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
-            top *= 4
-            right *= 4
-            bottom *= 4
-            left *= 4
-
+        top, right, bottom, left = self.face_locations[0]
+        print(f' top : {top}')
+        print(f' right : {right}')
+        print(f' bottom : {bottom}')
+        print(f' left : {left}')
+        if name != '' and name !='Unknown':
+            cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
             cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
 
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), color, cv2.FILLED)
@@ -103,6 +105,7 @@ if __name__ == '__main__':
     camera = Camera('../registered')
     while True:
         frame, name = camera.get_frame()
+        print(f'name : {name}')
         cv2.imshow("webcam", frame)
 
         key = cv2.waitKey(1) & 0xFF
