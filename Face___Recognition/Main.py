@@ -57,7 +57,7 @@ while True:
     imgS = cv2.resize(img, (0,0), None, 0.25,0.25)  # 인식 부분에만 크기를 1/4로 조정. (초당 프레임 향상 효과)
     imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
     faces_in_frame = face_recognition.face_locations(imgS)
-    encoded_faces = face_recognition.face_encodings(imgS, faces_in_frame)
+    encoded_faces =     face_recognition.face_encodings(imgS, faces_in_frame)
     for encode_face, faceloc in zip(encoded_faces,faces_in_frame):
         matches = face_recognition.compare_faces(encoded_face_train, encode_face)
         faceDist = face_recognition.face_distance(encoded_face_train, encode_face)

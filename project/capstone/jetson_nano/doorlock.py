@@ -24,5 +24,4 @@ class Doorlock:
     def action(self, q):
         while True:
             name = q.get()
-            if name !='' and name != 'Unknown':
-                self.open()
+            self.open()

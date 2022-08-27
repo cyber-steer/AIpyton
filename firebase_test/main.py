@@ -16,7 +16,7 @@ firebase=pyrebase.initialize_app(firebaseConfig)
 
 db=firebase.database()
 # auth=firebase.auth()
-# storage=firebase.storage()
+storage=firebase.storage()
 
 # Authentication
 # Login
@@ -40,15 +40,15 @@ db=firebase.database()
 #         print("Email already exists")
 
 # Storage
-# filename = input("Enter the name of the file you want to upload")
-# cloudfilename = input("Enter the name of the file on the cloud")
-# storage.child(cloudfilename).put(filename)
+filename = input("Enter the name of the file you want to upload")
+cloudfilename = input("Enter the name of the file on the cloud")
+storage.child(cloudfilename).put(filename)
 #
-# print(storage.child(cloudfilename).get_url(None))
+print(storage.child(cloudfilename).get_url(None))
 
 # download
-# cloudfilename = input("Enter the name of the file you want to download")
-# storage.child(cloudfilename).download("","dummy.txt")
+cloudfilename = input("Enter the name of the file you want to download")
+storage.child(cloudfilename).download("","dummy.txt")
 
 # reading file
 # cloudfilename = input("Enter the name of the file you want to download")

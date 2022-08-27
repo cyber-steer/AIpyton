@@ -15,8 +15,8 @@ class firebase_database():
     def insert(self, q):
         while True:
             name = q.get()
-            if name != "":
-                self.set(name)
+            self.set(name)
+
     # firebase에 추가
     def set(self, name):
         date = str(datetime.datetime.now())
