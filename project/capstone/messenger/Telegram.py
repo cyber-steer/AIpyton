@@ -25,6 +25,5 @@ class Telegram:
                 file = q.get()
                 self.sendMessege()
                 self.sendImg('Unknown.jpg')
-                print('teleram send')
                 send.set()
                 receive.clear()

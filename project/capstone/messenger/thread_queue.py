@@ -4,6 +4,7 @@ from queue import Queue
 class Thread_Queue:
     def __init__(self):
         self.realtime_queue = Queue()
+        self.update_queue = Queue()
         self.storage_queue = Queue()
         self.telegram_queue = Queue()
         self.doorlock_queue = Queue()
@@ -11,6 +12,8 @@ class Thread_Queue:
 
     def get_realtime(self):
         return self.realtime_queue
+    def get_update(self):
+        return self.update_queue
     def get_storage(self):
         return self.storage_queue
     def get_telegram(self):
@@ -27,8 +30,5 @@ class Thread_Queue:
     def put_img(self, name, frame):
         data = { name : frame}
         self.capture_queue.put(data)
-        print("capture put")
         self.storage_queue.put(name)
-        print("storage put")
         self.telegram_queue.put(name)
-        print("telegram put")
